@@ -4,21 +4,18 @@ version       := "4.0.0-SNAPSHOT"
 
 name          := "drunken-data-quality"
 
-scalaVersion  := "2.10.5"
+scalaVersion  := "2.11.8"
 
-crossScalaVersions := Seq("2.10.5", "2.11.7")
+sparkVersion := "2.0.0"
 
-sparkVersion := "1.6.0"
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % sparkVersion.value % "provided",
+  "org.apache.spark" %% "spark-sql" % sparkVersion.value % "provided",
+  "org.mockito" % "mockito-all" % "1.8.4" % "test",
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+  "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2"
+)
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
-
-libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion.value % "provided"
-
-libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion.value % "provided"
-
-libraryDependencies += "org.apache.spark" %% "spark-hive" % sparkVersion.value % "provided"
-
-libraryDependencies += "org.mockito" % "mockito-all" % "1.8.4" % "test"
 
 spName := "FRosner/drunken-data-quality"
 
@@ -26,7 +23,7 @@ spAppendScalaVersion := true
 
 spIgnoreProvided := true
 
-sparkComponents ++= Seq("sql", "hive")
+sparkComponents ++= Seq("sql")
 
 licenses += "Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0")
 
