@@ -1,15 +1,17 @@
 package de.frosner.ddq.testutils
 
-import org.apache.spark.sql.SQLContext
-import org.apache.spark.sql.hive.test.TestHive
-
 trait SparkContexts {
 
-  protected val hive = TestHive
-  hive.setConf("spark.sql.shuffle.partitions", "5")
-  protected val sc = hive.sparkContext
-  protected val sql = new SQLContext(sc)
-  sql.setConf("spark.sql.shuffle.partitions", "5")
-  sys.addShutdownHook(hive.reset())
+  import org.apache.spark.sql.SparkSession
 
+  protected val spark = SparkSession
+    .builder()
+    .master("local[2]")
+    .appName("Unit Tests Using Spark")
+    .config("spark.sql.shuffle.partitions", "5")
+    .config("spark.default.parallelism", "10")
+    .getOrCreate()
+
+  protected val sc = spark.sparkContext
+  protected val sql = spark.sqlContext
 }

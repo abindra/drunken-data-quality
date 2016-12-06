@@ -13,7 +13,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FlatSpec, Matchers}
 class CheckTest extends FlatSpec with Matchers with BeforeAndAfterEach with BeforeAndAfterAll with MockitoSugar with SparkContexts {
 
   override def afterAll(): Unit = {
-    hive.reset()
+
   }
 
   "Multiple checks" should "produce a constraintResults map with all constraints and corresponding results" in {
@@ -68,31 +68,6 @@ class CheckTest extends FlatSpec with Matchers with BeforeAndAfterEach with Befo
     }
   }
 
-  "A check from a HiveContext" should "load the given table from the given database" in {
-    val tableName = "myintegerdf2"
-    val databaseName = "testDb"
-    hive.sql(s"CREATE DATABASE $databaseName")
-    hive.sql(s"USE $databaseName")
-    val df = TestData.makeIntegerDf(hive, List(1,2,3))
-    df.registerTempTable(tableName)
-    hive.sql(s"USE default")
-    val columnName = "column"
-    val constraint = Check.isNeverNull(columnName)
-    val result = NeverNullConstraintResult(
-      constraint = NeverNullConstraint(columnName),
-      data = Some(NeverNullConstraintResultData(0L)),
-      status = ConstraintSuccess
-    )
-    Check.hiveTable(hive, databaseName, tableName).addConstraint(constraint).run().
-      constraintResults shouldBe Map(constraint -> result)
-    hive.sql(s"DROP DATABASE $databaseName")
-  }
-
-  it should "require the table to exist" in {
-    intercept[IllegalArgumentException] {
-      Check.hiveTable(hive, "default", "doesnotexist").run()
-    }
-  }
 
   "The run method on a Check" should "work correctly when multiple reporters are specified" in {
     val df = mock[DataFrame]
