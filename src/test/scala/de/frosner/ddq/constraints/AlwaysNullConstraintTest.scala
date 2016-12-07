@@ -43,7 +43,7 @@ class AlwaysNullConstraintTest extends FlatSpec with Matchers with SparkContexts
       None
       ) => {
         val analysisException = constraintError.throwable.asInstanceOf[AnalysisException]
-        analysisException.message shouldBe "cannot resolve 'notExisting' given input columns column"
+        analysisException.message should include ("notExisting")
       }
     }
   }

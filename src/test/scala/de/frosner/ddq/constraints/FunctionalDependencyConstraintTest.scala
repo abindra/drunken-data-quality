@@ -119,7 +119,7 @@ class FunctionalDependencyConstraintTest extends FlatSpec with Matchers with Spa
         constraintError: ConstraintError
       ) => {
         val analysisException = constraintError.throwable.asInstanceOf[AnalysisException]
-        analysisException.message shouldBe "cannot resolve 'notExisting' given input columns column1, column2, column3, column4"
+        analysisException.message should include ("notExisting")
       }
     }
   }
@@ -143,7 +143,7 @@ class FunctionalDependencyConstraintTest extends FlatSpec with Matchers with Spa
       constraintError: ConstraintError
       ) => {
         val analysisException = constraintError.throwable.asInstanceOf[AnalysisException]
-        analysisException.message shouldBe "cannot resolve 'notExisting' given input columns column1, column2, column3, column4"
+        analysisException.message should include ("notExisting")
       }
     }
   }

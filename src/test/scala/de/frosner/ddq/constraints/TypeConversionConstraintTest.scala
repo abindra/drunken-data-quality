@@ -69,7 +69,7 @@ class TypeConversionConstraintTest extends FlatSpec with Matchers with SparkCont
         constraintError: ConstraintError
       ) => {
         val analysisException = constraintError.throwable.asInstanceOf[AnalysisException]
-        analysisException.message shouldBe "cannot resolve 'notExisting' given input columns column"
+        analysisException.message should include ("notExisting")
       }
     }
   }
