@@ -4,11 +4,11 @@ sealed trait ConstraintStatus {
   val stringValue: String
 }
 
-object ConstraintSuccess extends ConstraintStatus {
+case object ConstraintSuccess extends ConstraintStatus {
   val stringValue = "Success"
 }
 
-object ConstraintFailure extends ConstraintStatus {
+case object ConstraintFailure extends ConstraintStatus {
   val stringValue = "Failure"
 }
 
