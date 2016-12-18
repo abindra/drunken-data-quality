@@ -148,6 +148,20 @@ case class Check(dataFrame: DataFrame,
     Check.hasForeignKey(referenceTable, keyMap, keyMaps: _*)
   )
 
+
+  /**
+   * Check whether the columns with the given names define a foreign key to the specified reference table.
+   *
+   * @param referenceTable Table to which the foreign key is pointing
+   * @param keyMap Column mapping from this table to the reference one (`"column1" -> "base_column1"`)
+   * @param keyMaps Column mappings from this table to the reference one (`"column1" -> "base_column1"`)
+   * @return [[core.Check]] object including this constraint
+   */
+  def hasForeignKey(referenceTable: DataFrame, name: Option[String],
+                    keyMap: (String, String), keyMaps: (String, String)*): Check = addConstraint(
+    Check.hasForeignKey(referenceTable, name, keyMap, keyMaps: _*)
+  )
+
   /**
    * Check whether a join between this table and the given reference table returns any results. This can be seen
    * as a weaker version of the foreign key check, as it requires only partial matches.
@@ -329,6 +343,21 @@ object Check {
     ForeignKeyConstraint(columns, referenceTable)
   }
 
+
+  /**
+   * Check whether the columns with the given names define a foreign key to the specified reference table.
+   *
+   * @param referenceTable Table to which the foreign key is pointing
+   * @param name Descriptive name for reference table
+   * @param keyMap Column mapping from this table to the reference one (`"column1" -> "base_column1"`)
+   * @param keyMaps Column mappings from this table to the reference one (`"column1" -> "base_column1"`)
+   * @return [[constraints.Constraint]] object
+   */
+  def hasForeignKey(referenceTable: DataFrame, name: Option[String],
+                    keyMap: (String, String), keyMaps: (String, String)*): Constraint = {
+    val columns = keyMap :: keyMaps.toList
+    ForeignKeyConstraint(columns, referenceTable, name)
+  }
   /**
    * Check whether a join between this table and the given reference table returns any results. This can be seen
    * as a weaker version of the foreign key check, as it requires only partial matches.
