@@ -92,9 +92,9 @@ object Log4jReporter {
         "dateFormat" -> dateFormatConstraintResult.constraint.format.toPattern,
         failedInstancesKey -> JSONMaybe(dateFormatConstraintResult.data.map(_.failedRows))
       )
-      case ForeignKeyConstraintResult(ForeignKeyConstraint(columns, ref), nonMatchingRows, status) => Map(
+      case ForeignKeyConstraintResult(ForeignKeyConstraint(columns, ref, name), nonMatchingRows, status) => Map(
         columnsKey -> columnsToJsonArray(columns),
-        referenceTableKey -> ref.toString,
+        referenceTableKey -> name.getOrElse(ref.toString),
         failedInstancesKey -> JSONMaybe(nonMatchingRows.flatMap(_.numNonMatchingRefs))
       )
       case functionalDependencyConstraintResult: FunctionalDependencyConstraintResult => Map(

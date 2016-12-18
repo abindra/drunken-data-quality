@@ -4,7 +4,10 @@ import org.apache.spark.sql.{Column, DataFrame}
 
 import scala.util.Try
 
-case class ForeignKeyConstraint(columnNames: Seq[(String, String)], referenceTable: DataFrame) extends Constraint {
+case class ForeignKeyConstraint(columnNames: Seq[(String, String)], referenceTable: DataFrame,
+                                displayName: Option[String] = Option.empty) extends Constraint {
+
+  val name = displayName.getOrElse(referenceTable.toString)
 
   val fun = (df: DataFrame) => {
     val renamedColumns = columnNames.map{ case (baseColumn, refColumn) => ("b_" + baseColumn, "r_" + refColumn)}
@@ -58,7 +61,7 @@ case class ForeignKeyConstraintResult(constraint: ForeignKeyConstraint,
                                       status: ConstraintStatus) extends ConstraintResult[ForeignKeyConstraint] {
 
   val message: String = {
-    val referenceTable = constraint.referenceTable
+    val referenceTable = constraint.referenceTable.toString()
     val columnNames = constraint.columnNames
     val columnsString = columnNames.map { case (baseCol, refCol) => baseCol + "->" + refCol }.mkString(", ")
     val isPlural = columnNames.length > 1

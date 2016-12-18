@@ -107,7 +107,7 @@ class ForeignKeyConstraintTest extends FlatSpec with Matchers with MockitoSugar 
     val result = check.run().constraintResults(constraint)
     result match {
       case ForeignKeyConstraintResult(
-        ForeignKeyConstraint(Seq(("notExisting", "column1"), ("column3", "column2")), _),
+        ForeignKeyConstraint(Seq(("notExisting", "column1"), ("column3", "column2")), _, _),
         None,
         constraintError: ConstraintError
       ) => {
@@ -128,7 +128,7 @@ class ForeignKeyConstraintTest extends FlatSpec with Matchers with MockitoSugar 
     val result = check.run().constraintResults(constraint)
     result match {
       case ForeignKeyConstraintResult(
-      ForeignKeyConstraint(Seq(("column1", "notExisting"), ("column3", "column2")), _),
+      ForeignKeyConstraint(Seq(("column1", "notExisting"), ("column3", "column2")), _, _),
       None,
       constraintError: ConstraintError
       ) => {
