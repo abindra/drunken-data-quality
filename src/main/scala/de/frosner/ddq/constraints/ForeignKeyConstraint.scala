@@ -61,7 +61,7 @@ case class ForeignKeyConstraintResult(constraint: ForeignKeyConstraint,
                                       status: ConstraintStatus) extends ConstraintResult[ForeignKeyConstraint] {
 
   val message: String = {
-    val referenceTable = constraint.referenceTable.toString()
+    val referenceTable = constraint.name
     val columnNames = constraint.columnNames
     val columnsString = columnNames.map { case (baseCol, refCol) => baseCol + "->" + refCol }.mkString(", ")
     val isPlural = columnNames.length > 1
