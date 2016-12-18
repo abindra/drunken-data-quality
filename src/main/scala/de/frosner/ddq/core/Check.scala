@@ -157,7 +157,7 @@ case class Check(dataFrame: DataFrame,
    * @param keyMaps Column mappings from this table to the reference one (`"column1" -> "base_column1"`)
    * @return [[core.Check]] object including this constraint
    */
-  def hasForeignKey(referenceTable: DataFrame, name: Option[String],
+  def hasForeignKey(referenceTable: DataFrame, name: String,
                     keyMap: (String, String), keyMaps: (String, String)*): Check = addConstraint(
     Check.hasForeignKey(referenceTable, name, keyMap, keyMaps: _*)
   )
@@ -353,10 +353,10 @@ object Check {
    * @param keyMaps Column mappings from this table to the reference one (`"column1" -> "base_column1"`)
    * @return [[constraints.Constraint]] object
    */
-  def hasForeignKey(referenceTable: DataFrame, name: Option[String],
+  def hasForeignKey(referenceTable: DataFrame, name: String,
                     keyMap: (String, String), keyMaps: (String, String)*): Constraint = {
     val columns = keyMap :: keyMaps.toList
-    ForeignKeyConstraint(columns, referenceTable, name)
+    ForeignKeyConstraint(columns, referenceTable, Some(name))
   }
   /**
    * Check whether a join between this table and the given reference table returns any results. This can be seen
